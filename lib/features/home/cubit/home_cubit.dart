@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:cantwait28/models/item_model.dart';
 import 'package:cantwait28/models/item_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -21,10 +22,11 @@ class HomeCubit extends Cubit<HomeState> {
         final itemModels = items.docs.map((doc) {
           return ItemModel(
             title: doc['title'],
-            imgURL: doc['image_url'],
-            releseDate: doc['release_data'],
+            imageUrl: doc['image_URl'],
+            relesedate: doc['relese_date'],
           );
         }).toList();
+
         emit(HomeState(items: itemModels));
       },
     )..onError(
