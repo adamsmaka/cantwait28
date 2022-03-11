@@ -22,4 +22,10 @@ class MyApp extends StatelessWidget {
       home: const AuthGate(),
     );
   }
+
+  ThemeData getTheme() {
+    return ThemeData(
+      primarySwatch: Colors.purple,
+    );
+  }
 }
