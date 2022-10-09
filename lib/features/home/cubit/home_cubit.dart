@@ -22,7 +22,7 @@ class HomeCubit extends Cubit<HomeState> {
             id: doc.id,
             title: doc['title'],
             imageUrl: doc['image_url'],
-            releaseDate: (doc['releaseDate'] as Timestamp).toDate(),
+            releaseDate: (doc['release_date'] as Timestamp).toDate(),
           );
         }).toList();
         emit(HomeState(items: itemModels));
