@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "794917310984",
+    "project_id": "cant-wait-1564",
+    "storage_bucket": "cant-wait-1564.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794917310984:android:d29232ec10757619e6f7bd",
+        "android_client_info": {
+          "package_name": "com.norbertwerblicki.cantwait28"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794917310984-ejcre7tofpl4kar2g7re2t15uhmm6suv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIUqhqvb-bS4eQX9mu7bk7Ag3KqXMcm6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794917310984-ejcre7tofpl4kar2g7re2t15uhmm6suv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
