@@ -18,8 +18,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData.dark(),
+      theme: getThemeData(),
       home: const AuthGate(),
+    );
+  }
+
+  ThemeData getThemeData() {
+    return ThemeData(
+      primarySwatch: Colors.purple,
     );
   }
 }
