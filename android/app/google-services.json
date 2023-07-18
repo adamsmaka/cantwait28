@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "858858393299",
+    "project_id": "cantwaitmichalt93",
+    "storage_bucket": "cantwaitmichalt93.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858858393299:android:32dd3b26c639a841458e26",
+        "android_client_info": {
+          "package_name": "com.michaltrzopek.cantwait28"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858858393299-o01poeqc73kbujldk6mhuvndif7q93fb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkyYRzy2NndtxlFG5H5m7Eum5D93L8-nQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "858858393299-o01poeqc73kbujldk6mhuvndif7q93fb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "858858393299-g01q9qc2jnsh4k730sb6rgvbcdjqi9ju.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.michaltrzopek.cantwait28"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
