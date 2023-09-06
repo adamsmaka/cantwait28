@@ -9,19 +9,26 @@ class HomePage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+/* Scaffold posiadający w sobie AppBAr z textem cant wait,
+poniżej _HomePageBody i FloatingActionButton będący ikonką dodawania.
+*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Can\'t Wait 🤩'),
+        title: const Text("Can't Wait 🤩"), // ("") bo jest apostrof w środku
       ),
-      body: const _HomePageBody(),
+      body:
+          const _HomePageBody(), //podkreślnik sprawia, że do tego widoku nie mamy dostepu z żadnego innego pliku tzw. klasa prywatna
       floatingActionButton: FloatingActionButton(
+        //ikona dodawania, wyświetla scaffold z AddPage
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const AddPage(),
-              fullscreenDialog: true,
+              fullscreenDialog:
+                  true, //Ekran w lewym górnym rogu nie będzie miał opcji 'wstecz', tylko X do zamknięcia ekranu
             ),
           );
         },
@@ -30,6 +37,21 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+/* W _HomePageBody mamy BlocProvider z HomeCubit, który przy inicjalizacji
+od razu wywołuje metode start, która z firebasea pobiera dane 
+i emituje je w HomeState.
+Do tego BlocBuilder obsługujacy nowy state gdy zostaje wrzucony.
+Na początku jest to pusty HomeState nie posiadający żadnych danych,
+boole z errorami są ustawione na false i pierwsze co robimy to sprawdzamy, 
+czy dokumenty są nullem.
+ builder: (context, state) {
+          final docs = state.items?.docs;
+          if (docs == null) {
+            return const SizedBox.shrink();
+
+Jeśli okaże się, że tak - zwracamy SizedBox.shrink, który jest pustym widgetem
+*/
 
 class _HomePageBody extends StatelessWidget {
   const _HomePageBody({
@@ -51,6 +73,22 @@ class _HomePageBody extends StatelessWidget {
               vertical: 20,
             ),
             children: [
+              /*W children mamy pętle for in przelatującą przez wszystkie docs'y
+              i dla każdego tworzy Dismissible widget, co pozwala przesuwaniem w bok
+              usuwać pozycje z listy (a zarazem dokumenty z firebasea)
+              Posiada on background z kolorem czerwonym i ikona kosza towarzyszaca przy usuwaniu pozycji
+
+              confirmDismiss: (direction) async {
+                    // only from right to left
+                    return direction == DismissDirection.endToStart;
+                  },
+                  onDismissed: (direction) {
+                    context.read<HomeCubit>().remove(documentID: doc.id);
+                  
+              Ta formuła mówi nam, że usuwanie dokumentu nastąpi dopiero po przesumięciu kafelka
+              od strony prawej do lewej (endToStart), w innym wypadku confirmDismiss ustawia sie na false
+              i nie dokonuje sie usuwanie
+              */
               for (final doc in docs)
                 Dismissible(
                   key: ValueKey(doc.id),
@@ -76,6 +114,7 @@ class _HomePageBody extends StatelessWidget {
                     context.read<HomeCubit>().remove(documentID: doc.id);
                   },
                   child: _ListViewItem(
+                    //wyświetla nam liste z dokumentami
                     document: doc,
                   ),
                 ),
@@ -130,7 +169,7 @@ class _ListViewItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          document['title'],
+                          document['title'], //wyświetla nam tytuł
                           style: const TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -138,7 +177,8 @@ class _ListViewItem extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          (document['release_date'] as Timestamp)
+                          (document['release_date']
+                                  as Timestamp) //wyświetla nam dokładną datę z firebasea
                               .toDate()
                               .toString(),
                         ),
@@ -147,6 +187,7 @@ class _ListViewItem extends StatelessWidget {
                   ),
                 ),
                 Container(
+                  //kontener zawierajacy ilosc dni
                   decoration: const BoxDecoration(
                     color: Colors.white70,
                   ),
@@ -155,7 +196,7 @@ class _ListViewItem extends StatelessWidget {
                   child: Column(
                     children: const [
                       Text(
-                        '0',
+                        '0', //poczatkowy hard code na 0
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,

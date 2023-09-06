@@ -14,16 +14,24 @@ class HomeCubit extends Cubit<HomeState> {
     _streamSubscription = FirebaseFirestore.instance
         .collection('items')
         .orderBy('release_date')
-        .snapshots().listen(
+        .snapshots()
+        .listen(
       (items) {
-        emit(HomeState(items: items));
+        emit(HomeState(
+            items:
+                items)); //gdy przychodza do nas jakies nowe dane z firebasea, od razu przychodzą
       },
     )..onError(
         (error) {
-          emit(const HomeState(loadingErrorOccured: true));
+          emit(const HomeState(
+              loadingErrorOccured:
+                  true)); //Jeżeli ładowanie zostało przerwane emituje state z errorem
         },
       );
   }
+
+/* remove odnoszacy sie do formuły dismissed z _HomePageBody,
+tutaj działa w firebase, tam we flutterze */
 
   Future<void> remove({required String documentID}) async {
     try {
@@ -33,11 +41,16 @@ class HomeCubit extends Cubit<HomeState> {
           .delete();
     } catch (error) {
       emit(
-        const HomeState(removingErrorOccured: true),
+        const HomeState(
+            removingErrorOccured:
+                true), //jesli wystapi błąd, emitujemy statea który nas o tym informuje i emitujemy start()
       );
       start();
     }
   }
+
+/*close zamykajacy stream jeżeli użytkownik wychodzi z aplikacji 
+zeby appka nie jadła RAMu niepotrzebnie*/
 
   @override
   Future<void> close() {
