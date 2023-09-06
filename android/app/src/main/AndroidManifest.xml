@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cantwait28">
+    package="com.example.cantwait212">
    <application
-        android:label="cantwait28"
+        android:label="cantwait212"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
