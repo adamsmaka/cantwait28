@@ -10,4 +10,10 @@ class ItemModel {
     required this.releaseDate,
     required this.id,
   });
+  //metoda
+  // która ma pokazywać nam ile dni zostało korzystamy z różnicy między release date a Datetime.now
+
+  String daysLeft() {
+    return releaseDate.difference(DateTime.now()).inDays.toString();
+  }
 }
