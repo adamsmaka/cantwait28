@@ -1,6 +1,8 @@
 import 'package:cantwait28/features/add/cubit/add_cubit.dart';
+import 'package:cantwait28/repositories/items_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({
@@ -19,49 +21,68 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddCubit(),
-      child: BlocBuilder<AddCubit, AddState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Add new upcoming title'),
-              actions: [
-                IconButton(
-                  onPressed: _imageURL == null ||
-                          _title == null ||
-                          _releaseDate == null
-                      ? null
-                      : () {
-                          context.read<AddCubit>().add(
-                                _title!,
-                                _imageURL!,
-                                _releaseDate!,
-                              );
-                        },
-                  icon: const Icon(Icons.check),
+      create: (context) => AddCubit(ItemsRepository()),
+      child: BlocListener<AddCubit, AddState>(
+        listener: (context, state) {
+          if (state.saved) {
+            Navigator.of(context).pop();
+          }
+          if (state.errorMessage.isNotEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  state.errorMessage,
                 ),
-              ],
-            ),
-            body: _AddPageBody(
-              onTitleChanged: (newValue) {
-                setState(() {
-                  _title = newValue;
-                });
-              },
-              onImageUrlChanged: (newValue) {
-                setState(() {
-                  _imageURL = newValue;
-                });
-              },
-              onDateChanged: (newValue) {
-                setState(() {
-                  _releaseDate = newValue;
-                });
-              },
-              selectedDateFormatted: _releaseDate?.toIso8601String(),
-            ),
-          );
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
         },
+        child: BlocBuilder<AddCubit, AddState>(
+          builder: (context, state) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text('Add new upcoming title'),
+                actions: [
+                  IconButton(
+                    onPressed: _imageURL == null ||
+                            _title == null ||
+                            _releaseDate == null
+                        ? null
+                        : () {
+                            context.read<AddCubit>().add(
+                                  _title!,
+                                  _imageURL!,
+                                  _releaseDate!,
+                                );
+                          },
+                    icon: const Icon(Icons.check),
+                  ),
+                ],
+              ),
+              body: _AddPageBody(
+                onTitleChanged: (newValue) {
+                  setState(() {
+                    _title = newValue;
+                  });
+                },
+                onImageUrlChanged: (newValue) {
+                  setState(() {
+                    _imageURL = newValue;
+                  });
+                },
+                onDateChanged: (newValue) {
+                  setState(() {
+                    _releaseDate = newValue;
+                  });
+                },
+                selectedDateFormatted: _releaseDate == null
+                    ? null
+                    : DateFormat.yMMMEd().format(_releaseDate!),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

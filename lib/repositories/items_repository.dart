@@ -1,0 +1,85 @@
+import 'package:cantwait28/models/item_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+//dostajemy Stream od query snapshot a my zamieniamy na stream od itemmodel
+//mapujemy każdy element streamu na nowy element oraz w środku każdy element docsów na item model
+class ItemsRepository {
+  //metoda getItemsStream
+  Stream<List<ItemModel>> getItemsStream() {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('user is not logged in');
+    }
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('items')
+        .orderBy('release_date')
+        .snapshots()
+        .map((querySnaphot) {
+      return querySnaphot.docs.map(
+        (doc) {
+          return ItemModel(
+            id: doc.id,
+            title: doc['title'],
+            imageUrl: doc['image_url'],
+            releaseDate: (doc['release_date'] as Timestamp).toDate(),
+          );
+        },
+      ).toList();
+    });
+  }
+
+  Future<void> delete({required String id}) {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('user is not logged in');
+    }
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('items')
+        .doc(id)
+        .delete();
+  }
+
+  Future<ItemModel> get({required String id}) async {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('user is not logged in');
+    }
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('items')
+        .doc(id)
+        .get();
+    return ItemModel(
+      id: doc.id,
+      title: doc['title'],
+      imageUrl: doc['image_url'],
+      releaseDate: (doc['release_date'] as Timestamp).toDate(),
+    );
+  }
+
+  Future<void> add(
+    String title,
+    String imageURL,
+    DateTime releaseDate,
+  ) async {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('user is not logged in');
+    }
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .collection('items')
+        .add({
+      'title': title,
+      'image_url': imageURL,
+      'release_date': releaseDate,
+    });
+  }
+}
